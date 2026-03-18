@@ -1,0 +1,14 @@
+Sistema de chamado interno de TI.
+
+Será utilizado para registrar e acompanhar solicitações relacionadas ao suporte de TI, permitindo que funcionários abram chamados informando o problema enfrentado. 
+O sistema classificará automaticamente a prioridade das solicitações e permitirá o acompanhamento do status até sua resolução.
+
+Exemplos de solicitações:
+- Computador não liga
+- Falha no acesso a sistemas
+- Problemas de rede
+ -Instalação de softwares
+
+TABELAS:
+- Usuário
+- Funcionário
