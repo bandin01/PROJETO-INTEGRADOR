@@ -1,0 +1,24 @@
+# REUNIÃO 02
+
+TABELAS NECESSÁRIAS PARA CRIAÇÃO DO BANCO DE DADOS:
+1. Usuario
+### Além do básico, precisamos de uma forma de autenticação (mesmo que simples) e de uma distinção entre quem abre o chamado e quem resolve
+- id_usuario (INT, Primary Key, Auto Increment)
+- nome (VARCHAR)
+- email (VARCHAR, Unique)
+- senha (VARCHAR)
+- departamento (VARCHAR)
+
+2. Departamento
+- id_depto (INT, PK)
+- nome_depto (VARCHAR)
+
+3. Chamado
+- id_chamado (INT, Primary Key, Auto Increment)
+- titulo (VARCHAR)
+- descricao (TEXT)
+- data_abertura (DATETIME)
+- prioridade ('baixa', 'media', 'alta')
+- status ('aberto', 'em_atendimento', 'concluido')
+- id_solicitante (INT, Foreign Key) — Conecta com o ID do usuário que abriu
+- id_tecnico (INT, Foreign Key, Nullable) — ID do técnico que assumiu o caso
