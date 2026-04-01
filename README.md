@@ -14,3 +14,10 @@ O sistema foi projetado para cobrir o ciclo de vida básico de um chamado de sup
 🛠️ Tecnologias Utilizadas
   Linguagem: Python
   Banco de Dados: MySQL
+
+📊 Estrutura do Banco de Dados
+O projeto utiliza um modelo relacional para garantir a integridade dos dados:
+  - Usuarios: Armazena os dados de quem utiliza o sistema.
+  - Solicitacoes: Registra os detalhes do problema, datas e status.
+  - Departamentos: Tabela de referência para organizar a origem dos chamados.
+  - Categorias: Classificação técnica dos problemas para geração de estatísticas.
