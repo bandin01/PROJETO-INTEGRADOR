@@ -16,8 +16,8 @@ O sistema foi projetado para cobrir o ciclo de vida básico de um chamado de sup
 
 🛠️ Tecnologias Utilizadas:
 
-  Linguagem: Python
-  Banco de Dados: MySQL
+  - Linguagem: Python
+  - Banco de Dados: MySQL
 
 
 📊 Estrutura do Banco de Dados:
