@@ -8,10 +8,10 @@ Sistema interno de controle de chamados de suporte de TI, desenvolvido em Python
 
 | Nome | GitHub |
 |------|----|
-| Davi Bandin | |
-| Lucas Nascimento | [@lucass-nasc] |
-| Miguel Trentini | |
-| Vitor Furlan | [@vtr1812] |
+| Davi Bandin | [@bandin01](https://github.com/bandin01) |
+| Lucas Nascimento | [@lucass-nasc](https://github.com/lucass-nasc) |
+| Miguel Trentini | [@miguelttortella](https://github.com/MiguelTTortella) |
+| Vitor Furlan | [@vtr1812](https://github.com/vtr1812) |
 
 
 ---
