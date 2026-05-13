@@ -1,29 +1,168 @@
-# PROJETO-INTEGRADOR
-SCSC - Sistema de Controle de Solicitações Corporativos
+# Sistema de Chamados — Projeto Integrador I
 
-Este é um sistema de chamados internos de TI desenvolvido como parte do Projeto Integrador do 1º Semestre do curso de Sistemas de Informação. O objetivo é gerenciar solicitações de suporte de forma organizada, utilizando uma interface de terminal em Python integrada a um banco de dados relacional MySQL.
+Sistema interno de controle de chamados de suporte de TI, desenvolvido em Python com banco de dados MySQL. Permite registrar usuários, abrir chamados, acompanhar status e visualizar estatísticas.
 
+---
 
-🚀 Funcionalidades:
+## Integrantes
 
-O sistema foi projetado para cobrir o ciclo de vida básico de um chamado de suporte:
-  - Cadastrar Usuário: Registro de funcionários com vínculo a departamentos específicos.
-  - Abrir Solicitação: Criação de chamados categorizados (Hardware, Software, etc.) com níveis de prioridade.
-  - Ver Solicitações: Listagem de chamados para acompanhamento.
-  - Atualizar Status: Controle do fluxo de trabalho (Aberto, Em Atendimento, Concluído).
-  - Estatísticas: Visão geral de métricas, como total de chamados e volume por categoria.
-
-
-🛠️ Tecnologias Utilizadas:
-
-  - Linguagem: Python
-  - Banco de Dados: MySQL
+| Nome | GitHub |
+|------|----|
+| Davi Bandin | |
+| Lucas Nascimento | [@lucass-nasc] |
+| Miguel Trentini | |
+| Vitor Furlan | [@vtr1812] |
 
 
-📊 Estrutura do Banco de Dados:
+---
 
-O projeto utiliza um modelo relacional para garantir a integridade dos dados:
-  - Usuarios: Armazena os dados de quem utiliza o sistema.
-  - Solicitacoes: Registra os detalhes do problema, datas e status.
-  - Departamentos: Tabela de referência para organizar a origem dos chamados.
-  - Categorias: Classificação técnica dos problemas para geração de estatísticas.
+## Requisitos
+
+- Python 3.10 ou superior
+- MySQL 8.x
+- VPN Fortinet da faculdade ativa
+- Bibliotecas Python:
+  - `mysql-connector-python`
+  - `python-dotenv`
+
+---
+
+## Conexão VPN
+
+O banco de dados está hospedado no servidor da faculdade. É obrigatório estar conectado à VPN **Fortinet** antes de executar o sistema.
+
+**Como conectar:**
+1. Abra o cliente **FortiClient VPN**
+2. Insira o endereço do servidor VPN fornecido pela faculdade
+3. Digite seu usuário e senha institucionais
+4. Clique em **Conectar** e aguarde a confirmação
+
+Após conectado, o servidor do banco estará acessível no endereço `172.16.12.14`.
+
+---
+
+## Instalação
+
+**1. Clone o repositório**
+```bash
+git clone https://github.com/seu-repositorio/sistema-chamados.git
+cd sistema-chamados
+```
+
+**2. Instale as dependências**
+```bash
+pip install mysql-connector-python python-dotenv
+```
+
+**3. Configure o arquivo `.env`**
+
+Crie um arquivo `.env` na raiz do projeto com as credenciais do banco:
+```
+DB_HOST=172.16.12.14
+DB_USER=seu-usuario
+DB_PASS=sua-senha
+DB_NAME=SuporteTI
+```
+
+> O arquivo `.env` não é enviado ao GitHub por segurança. Solicite as credenciais com o docente ou com o responsável pelo banco.
+
+**4. Crie o banco de dados**
+
+Com a VPN ativa, execute o script SQL:
+```bash
+mysql -h 172.16.12.14 -u seu-usuario -p < sql/criar_banco.sql
+```
+
+Ou abra o arquivo `sql/criar_banco.sql` diretamente no MySQL Workbench e execute.
+
+---
+
+## Como executar
+
+Com a VPN ativa, rode:
+```bash
+python main.py
+```
+
+O menu principal será exibido no terminal com as opções disponíveis.
+
+---
+
+## Funcionalidades
+
+- Cadastro de usuários com validação de e-mail único
+- Listagem de usuários cadastrados
+- Abertura de chamados com prioridade calculada automaticamente
+- Listagem de chamados
+- Atualização de status com regra de integridade
+- Estatísticas por status e por prioridade
+
+---
+
+## Regra de Prioridade
+
+A prioridade é calculada automaticamente no momento da abertura do chamado, com base em dois fatores informados pelo usuário:
+
+- **Urgência** — nível de urgência do problema (1 a 3)
+- **Impacto** — abrangência do impacto (1 a 3)
+
+| Soma (urgência + impacto) | Prioridade |
+|---------------------------|------------|
+| 2 ou 3                    | Baixa      |
+| 4                         | Média      |
+| 5 ou 6                    | Alta       |
+
+A regra é determinística: as mesmas entradas sempre resultam na mesma prioridade.
+
+---
+
+## Regra de Transição de Status
+
+Os status válidos são: `aberto`, `em atendimento` e `concluido`.
+
+---
+
+## Modelagem do Banco de Dados
+
+O banco possui três tabelas:
+
+**Departamento** — armazena os departamentos da organização.
+
+**Usuario** — armazena os usuários do sistema (clientes e técnicos), vinculados a um departamento.
+
+**Chamado** — armazena os chamados abertos pelos clientes, com prioridade calculada automaticamente e status atualizado pelos técnicos.
+
+Relacionamentos:
+- `Usuario` referencia `Departamento` (cada usuário pertence a um departamento)
+- `Chamado` referencia `Usuario` duas vezes: uma para o solicitante e outra para o técnico responsável
+
+O MER completo está disponível em `docs/MER.png`.
+
+---
+
+## Estrutura de Pastas
+
+```
+sistema-chamados/
+├── main.py          # Ponto de entrada e menu principal
+├── usuarios.py      # Cadastro, listagem e seleção de usuários
+├── chamados.py      # Abertura, listagem e atualização de chamados
+├── database.py      # Conexão com o banco de dados
+├── .env             # Credenciais do banco — NÃO sobe ao GitHub, deve ser criado manualmente
+├── .gitignore       # Impede o .env de ser enviado ao GitHub
+├── requirements.txt
+├── README.md
+├── sql/
+│   ├── criar_banco.sql   
+│   └── dados_exemplo.sql 
+└── docs/
+    └── MER.png           # Modelo Entidade-Relacionamento
+```
+
+---
+
+## Observações
+
+- A interface é via terminal (CLI)
+- O sistema foi desenvolvido e testado no Windows com Python 3.11
+- É necessário que a VPN da faculdade esteja ativa antes de executar o programa
