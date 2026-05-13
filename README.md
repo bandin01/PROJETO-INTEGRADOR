@@ -1,123 +1,146 @@
- PROJETO-INTEGRADOR
+# Sistema de Chamados — Projeto Integrador I
 
-SCSC - Sistema de Controle de Solicitações Corporativos:
+Sistema interno de controle de chamados de suporte de TI, desenvolvido em Python com banco de dados MySQL. Permite registrar usuários, abrir chamados, acompanhar status e visualizar estatísticas.
 
-Este é um sistema de chamados internos de TI desenvolvido como parte do Projeto Integrador do 1º Semestre do curso de Sistemas de Informação. O objetivo é gerenciar solicitações de suporte de forma organizada, utilizando uma interface de terminal em Python integrada a um banco de dados relacional MySQL.
+---
 
-O SCSC foi desenvolvido para facilitar o controle de solicitações corporativas dentro de uma empresa, sendo agora possível registrar, acompanhar e atualizar solicitações feitas por usuários da empresa.
+## Integrantes
 
-O sistema busca aplicar conceitos de:
--Programação em Python.
--Banco de dados relacional.
--Integração entre Python e MySQL.
--CRUD (Create, Read, Update e Delete).
--Organização de sistemas.
+| Nome | GitHub |
+|------|----|
+| Davi Bandin | |
+| Lucas Nascimento | [@lucass-nasc] |
+| Miguel Trentini | |
+| Vitor Furlan | [@vtr1812] |
 
-FUNCIONALIDADES:
 
-O sistema foi projetado para cobrir o ciclo de vida básico de um chamado de suporte:
+---
 
-  - Cadastrar Usuário: Registro de funcionários com vínculo a departamentos específicos.
-  - Abrir Solicitação: Criação de chamados categorizados (Hardware, Software, etc.) com níveis de prioridade.
-  - Ver Solicitações: Listagem de chamados para acompanhamento.
-  - Atualizar Status: Controle do fluxo de trabalho (Aberto, Em Atendimento, Concluído).
-  - Estatísticas: Visão geral de métricas, como total de chamados e volume por categoria.
+## Requisitos
 
-REGRAS DE PRIORIDADE:
+- Python 3.10 ou superior
+- MySQL 8.x
+- VPN Fortinet da faculdade ativa
+- Bibliotecas Python:
+  - `mysql-connector-python`
+  - `python-dotenv`
 
-O sistema segue a seguinte ordem de prioridade:
-1-Validar os dados informados pelo usuário
-2-Garantir a conexão do banco de dados 
-3-Executar operações no banco
-4-Atualizar informações no sistema 
-5-Exibir mensagens de sucesso ou de erro
-6-Encerrar conexão corretamente 
+---
 
-DECISÕES DE MODELAGEM:
+## Conexão VPN
 
-Banco de dados relacional: Foi utilizado o MySQL para organizar os dados.
-Separação de responsabilidades: O projeto foi dividido em arquivos separados para (conexão com o banco de dados, funcionalidades do sistema e execução principal).
-Controle de status: Os chamados possuem status padronizados (Aberto, Em atendimento e concluído)
- Tecnologias Utilizadas: Linguagem (Python), banco de dados (MySQL), biblioteca de integração(mysql-connector-python)
+O banco de dados está hospedado no servidor da faculdade. É obrigatório estar conectado à VPN **Fortinet** antes de executar o sistema.
 
-ESTRUTURA DO BANCO DE DADOS:
+**Como conectar:**
+1. Abra o cliente **FortiClient VPN**
+2. Insira o endereço do servidor VPN fornecido pela faculdade
+3. Digite seu usuário e senha institucionais
+4. Clique em **Conectar** e aguarde a confirmação
 
-O projeto utiliza um modelo relacional para garantir a integridade dos dados:
-  - Usuários: Armazena os dados de quem utiliza o sistema.
-  - Solicitações: Registra os detalhes do problema, datas e status.
-  - Departamentos: Tabela de referência para organizar a origem dos chamados.
-  - Categorias: Classificação técnica dos problemas para geração de estatísticas.
+Após conectado, o servidor do banco estará acessível no endereço `172.16.12.14`.
 
-REQUISITOS DE INSTALAÇÃO:
-  - Python: 1-Baixar o instalador acessando (Python oficial)
-            2-Executar o instalador e marcar a opção (Add Python to PATH)
-            3-Fazer a instalação padrão
-            4-Abrir o terminal e testar:
-              print('hello world')
+---
 
--MySQL: 1-Acessar o site (MySQL oficial)
-        2-Baixar o MySQL server
-        3-Durante a instalação:
-          -Definir usuário e senha
-          -Manter a porta padrão(3306) 
-        4-Finalizar a instalação
+## Instalação
 
--Biblioteca necessária: 1-Instalar a biblioteca de conexão:
-                          -Abra o terminal e execute: pip install mysql-connector-python
-                        2-Crie a pasta do projeto:
-                          -Exemplo: PROJETO-INTEGRADOR/
-                        3-Montar a estrutura do projeto:
-                          -PROJETO-INTEGRADOR/
-                          │
-                          ├── main.py
-                          │
-                          ├── database/
-                          │   └── conexao.py
-                          │
-                          └── banco/
-                          └── script.sql
-                         4-Criar o banco de dados no MySQL:
-                           -Abra o MySQL e execute: CREATE DATABASE SCSC; 
-                         5-Crie o arquivo de conexão:
-                           -Crie: database/conexao.py
-                         6-Importar a biblioteca: import mysql.connector
-                         7-Faça a conexão:
-                           -Adicione: conexao = mysql.connector.connect(
-                                          host="localhost",
-                                          user="root",
-                                          password="SUA_SENHA",
-                                          database="scsc"
-                                      )
-                         8-Adicionar teste de conexão:
-                           -Código completo conexão.py:import mysql.connector
+**1. Clone o repositório**
+```bash
+git clone https://github.com/seu-repositorio/sistema-chamados.git
+cd sistema-chamados
+```
 
-                                                       conexao = mysql.connector.connect(
-                                                           host="localhost",
-                                                           user="root",
-                                                           password="SUA_SENHA",
-                                                           database="scsc"
-                                                       )
+**2. Instale as dependências**
+```bash
+pip install mysql-connector-python python-dotenv
+```
 
-                           
-                                                       print("Conexão realizada com sucesso!")
-                         9-Crie o main.py 
-                         10-Importe a conexão:
-                            -Dentro do main.py: from database.conexao import conexao
+**3. Configure o arquivo `.env`**
 
-                                                print("Sistema funcionando!")
-                         11-Execute o sistema:
-                            -Abra o terminal na pasta do projeto e execute: python main.py
-                         12- resultado esperado: Conexão realizada com sucesso!
-                                                 Sistema funcionando!
-                         13-Feche a conexão:
-                            -No final do main.py: conexão.close()
-                         14-Código final do main.py: from database.conexao import conexao
+Crie um arquivo `.env` na raiz do projeto com as credenciais do banco:
+```
+DB_HOST=172.16.12.14
+DB_USER=seu-usuario
+DB_PASS=sua-senha
+DB_NAME=SuporteTI
+```
 
-                                                     print("Sistema funcionando!")
+> O arquivo `.env` não é enviado ao GitHub por segurança. Solicite as credenciais com o docente ou com o responsável pelo banco.
 
-                                                     conexao.close()
+**4. Crie o banco de dados**
 
-ESTRUTURA DE PASTAS E ARQUIVOS: ## Estrutura de Pastas
+Com a VPN ativa, execute o script SQL:
+```bash
+mysql -h 172.16.12.14 -u seu-usuario -p < sql/criar_banco.sql
+```
+
+Ou abra o arquivo `sql/criar_banco.sql` diretamente no MySQL Workbench e execute.
+
+---
+
+## Como executar
+
+Com a VPN ativa, rode:
+```bash
+python main.py
+```
+
+O menu principal será exibido no terminal com as opções disponíveis.
+
+---
+
+## Funcionalidades
+
+- Cadastro de usuários com validação de e-mail único
+- Listagem de usuários cadastrados
+- Abertura de chamados com prioridade calculada automaticamente
+- Listagem de chamados
+- Atualização de status com regra de integridade
+- Estatísticas por status e por prioridade
+
+---
+
+## Regra de Prioridade
+
+A prioridade é calculada automaticamente no momento da abertura do chamado, com base em dois fatores informados pelo usuário:
+
+- **Urgência** — nível de urgência do problema (1 a 3)
+- **Impacto** — abrangência do impacto (1 a 3)
+
+| Soma (urgência + impacto) | Prioridade |
+|---------------------------|------------|
+| 2 ou 3                    | Baixa      |
+| 4                         | Média      |
+| 5 ou 6                    | Alta       |
+
+A regra é determinística: as mesmas entradas sempre resultam na mesma prioridade.
+
+---
+
+## Regra de Transição de Status
+
+Os status válidos são: `aberto`, `em atendimento` e `concluido`.
+
+---
+
+## Modelagem do Banco de Dados
+
+O banco possui três tabelas:
+
+**Departamento** — armazena os departamentos da organização.
+
+**Usuario** — armazena os usuários do sistema (clientes e técnicos), vinculados a um departamento.
+
+**Chamado** — armazena os chamados abertos pelos clientes, com prioridade calculada automaticamente e status atualizado pelos técnicos.
+
+Relacionamentos:
+- `Usuario` referencia `Departamento` (cada usuário pertence a um departamento)
+- `Chamado` referencia `Usuario` duas vezes: uma para o solicitante e outra para o técnico responsável
+
+O MER completo está disponível em `docs/MER.png`.
+
+---
+
+## Estrutura de Pastas
 
 ```
 sistema-chamados/
@@ -125,15 +148,21 @@ sistema-chamados/
 ├── usuarios.py      # Cadastro, listagem e seleção de usuários
 ├── chamados.py      # Abertura, listagem e atualização de chamados
 ├── database.py      # Conexão com o banco de dados
+├── .env             # Credenciais do banco — NÃO sobe ao GitHub, deve ser criado manualmente
+├── .gitignore       # Impede o .env de ser enviado ao GitHub
 ├── requirements.txt
 ├── README.md
 ├── sql/
-│   ├── criar_banco.sql   # DDL — criação das tabelas
-│   └── dados_exemplo.sql # DML — dados de teste
+│   ├── criar_banco.sql   
+│   └── dados_exemplo.sql 
 └── docs/
     └── MER.png           # Modelo Entidade-Relacionamento
 ```
 
+---
 
+## Observações
 
-INTEGRANTES DO GRUPO: Vitor Martins Furlan, Lucas Dos Santos Nascimento, Marcos José Davila Netto, Miguel Trentini Tortella, Davi Silveira Leite Bandin.
+- A interface é via terminal (CLI)
+- O sistema foi desenvolvido e testado no Windows com Python 3.11
+- É necessário que a VPN da faculdade esteja ativa antes de executar o programa
