@@ -111,22 +111,59 @@ def abrir_chamado(conexao):
 
 def ver_chamados(conexao):
     print("\n=== LISTA DE CHAMADOS ===")
+
+    # Mini-menu de filtro por prioridade
+    print("\nFiltrar por prioridade:")
+    print("  1 - Todas")
+    print("  2 - Baixa")
+    print("  3 - Média")
+    print("  4 - Alta")
+
+    filtro_valido = False
+    while not filtro_valido:
+        filtro_op = input("Escolha: ").strip()
+        if filtro_op == "1":
+            filtro = None
+            filtro_valido = True
+        elif filtro_op == "2":
+            filtro = "baixa"
+            filtro_valido = True
+        elif filtro_op == "3":
+            filtro = "media"
+            filtro_valido = True
+        elif filtro_op == "4":
+            filtro = "alta"
+            filtro_valido = True
+        else:
+            print("ERRO! Digite 1, 2, 3 ou 4.")
+
     cursor = conexao.cursor(dictionary=True)
     try:
-        query = """
-            SELECT c.id_chamado, c.titulo, c.status, c.prioridade, u.nome AS solicitante
-            FROM Chamado c
-            JOIN Usuario u ON c.id_solicitante = u.id_usuario
-            ORDER BY c.id_chamado DESC
-        """
-        cursor.execute(query)
+        if filtro:
+            query = """
+                SELECT c.id_chamado, c.titulo, c.status, c.prioridade, u.nome AS solicitante
+                FROM Chamado c
+                JOIN Usuario u ON c.id_solicitante = u.id_usuario
+                WHERE c.prioridade = %s
+                ORDER BY c.id_chamado DESC
+            """
+            cursor.execute(query, (filtro,))
+        else:
+            query = """
+                SELECT c.id_chamado, c.titulo, c.status, c.prioridade, u.nome AS solicitante
+                FROM Chamado c
+                JOIN Usuario u ON c.id_solicitante = u.id_usuario
+                ORDER BY c.id_chamado DESC
+            """
+            cursor.execute(query)
+
         resultados = cursor.fetchall()
 
         if not resultados:
-            print("Nenhum chamado cadastrado ainda.")
+            print("Nenhum chamado encontrado.")
         else:
             print(f"\n{'ID':<5} {'Status':<15} {'Prioridade':<10} {'Solicitante':<20} Título")
-            print("-" * 75) 
+            print("-" * 75)
             for c in resultados:
                 print(f"{c['id_chamado']:<5} {c['status']:<15} {c['prioridade']:<10} {c['solicitante']:<20} {c['titulo']}")
     except Exception as e:
@@ -184,6 +221,11 @@ def atualizar_status(conexao):
             status_valido = True
         else:
             print("ERRO! Digite 1, 2 ou 3.")
+            continue
+
+        if status_valido and novo_status == status_atual:
+            print(f"AVISO! O chamado já está com o status '{status_atual}'.")
+            return
 
     cursor = conexao.cursor()
     try:
